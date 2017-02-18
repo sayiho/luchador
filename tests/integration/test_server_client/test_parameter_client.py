@@ -6,28 +6,25 @@ import argparse
 
 import requests
 
-from luchador.util import deserialize_numpy_array
+import luchador
 import luchador.nn as nn
+from luchador.util import deserialize_numpy_array
 from luchador.agent.rl.q_learning import DeepQLearning
 
 _LG = logging.getLogger(__name__)
 
 
 def _build_model():
+    c, h, w, fmt = 4, 84, 84, luchador.get_nn_conv_format()
+    input_shape = [None, c, h, w] if fmt == 'NCHW' else [None, h, w, c]
+
     model_def = nn.get_model_config(
-        'vanilla_dqn', n_actions=4, input_shape='[null, 4, 84, 84]')
+        'vanilla_dqn', n_actions=4, input_shape=input_shape)
     dql = DeepQLearning(
         q_learning_config={
             'discount_rate': 0.99,
             'min_reward': -1.0,
             'max_reward': 1.0,
-        },
-        cost_config={
-            'typename': 'SSE2',
-            'args': {
-                'min_delta': -1.0,
-                'max_delta': 1.0,
-            },
         },
         optimizer_config={
             'typename': 'RMSProp',
@@ -63,7 +60,7 @@ def _test_fetch(session, dql, port=5000):
     if res.status_code == 200:
         for key, data in res.json().items():
             print(key)
-            print(deserialize_numpy_array(data))
+            print(deserialize_numpy_array(data).shape)
     else:
         raise RuntimeError('Failed to fetch.')
 
