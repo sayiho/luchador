@@ -45,3 +45,21 @@ class SigmoidCrossEntropy(base_cost.BaseSigmoidCrossEntropy):
         output = ce if self.args['elementwise'] else _mean_sum(ce)
         shape = target.shape if self.args['elementwise'] else (1,)
         return wrapper.Tensor(output, shape=shape)
+
+
+class SoftmaxCrossEntropy(base_cost.BaseSigmoidCrossEntropy):
+    """Implement SoftmaxCrossEntropy in Theano.
+
+    See :any:`BaseSoftmaxCrossEntropy` for detail.
+    """
+    def _build(self, target, logit):
+        x = logit.unwrap()
+        z = theano.gradient.disconnected_grad(target.unwrap())
+
+        xdev = x - x.max(1, keepdims=True)
+        log_sm = xdev - T.log(T.sum(T.exp(xdev), axis=1, keepdims=True))
+        ce = - z * log_sm
+
+        output = ce if self.args['elementwise'] else _mean_sum(ce)
+        shape = target.shape if self.args['elementwise'] else (1,)
+        return wrapper.Tensor(output, shape=shape)

@@ -72,7 +72,7 @@ class BaseSSE(BaseCost):
 
 
 class BaseSigmoidCrossEntropy(BaseCost):
-    """Directory computes classification entropy from logit
+    """Directly computes classification entropy from logit
 
     .. math::
         loss = \\frac{-1}{n} \\sum\\limits_{n=1}^N \\left[ p_n \\log
@@ -88,3 +88,18 @@ class BaseSigmoidCrossEntropy(BaseCost):
     """
     def __init__(self, elementwise=False):
         super(BaseSigmoidCrossEntropy, self).__init__(elementwise=elementwise)
+
+
+class BaseSoftmaxCrossEntropy(BaseCost):
+    """Directly computes classification entropy from logit
+
+    Parameters
+    ----------
+    elementwise : Bool
+        When True, the cost tesnor returned by `build` method has the same
+        shape as its input Tensors. When False, the cost tensor is reduced to
+        scalar shape by taking average over batch and sum over feature.
+        Defalut: False.
+    """
+    def __init__(self, elementwise=False):
+        super(BaseSoftmaxCrossEntropy, self).__init__(elementwise=elementwise)
