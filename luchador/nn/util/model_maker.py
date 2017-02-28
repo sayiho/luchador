@@ -5,8 +5,8 @@ import logging
 from collections import OrderedDict
 
 import luchador.nn
-from ..model import Sequential, Container
-from .getter import get_input, get_layer, get_tensor
+from ..model import Sequential, Graph, Container
+from .getter import get_input, get_layer, get_tensor, get_node
 
 _LG = logging.getLogger(__name__)
 
@@ -108,6 +108,16 @@ def make_io_node(config):
     return ret
 
 
+def make_node(node_config):
+    _LG.info('  Constructing Layer: %s', node_config)
+    if 'typename' not in node_config:
+        raise RuntimeError('Layer `typename` is not given')
+
+    node = get_node(node_config['typename'])(**node_config.get('args', {}))
+
+    return node
+
+
 def make_layer(layer_config):
     """Make Layer instance
 
@@ -171,6 +181,14 @@ def make_sequential_model(layer_configs, input_config=None):
     return model
 
 
+def make_graph_model(node_configs):
+    model = Graph()
+    for node_config in node_configs:
+        node = make_node(node_config)
+        model.add_node(node)
+    return model
+
+
 def make_container_model(input_config, model_configs, output_config=None):
     """Make ``Container`` model from model configuration
 
@@ -220,6 +238,8 @@ def make_model(model_config):
     _type = model_config.get('typename', 'No model type found')
     if _type == 'Sequential':
         return make_sequential_model(**model_config.get('args', {}))
+    if _type == 'Graph':
+        return make_graph_model(**model_config.get('args', {}))
     if _type == 'Container':
         return make_container_model(**model_config.get('args', {}))
 

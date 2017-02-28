@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 from luchador.util import get_subclasses
 
-from ..base import BaseCost, BaseLayer, BaseOptimizer, BaseInitializer
+from ..base import BaseCost, BaseLayer, BaseOptimizer, BaseInitializer, Node
 
 
 def get_cost(name):
@@ -97,6 +97,30 @@ def get_initializer(name):
         When ``Initializer`` class with the given type is not found
     """
     for class_ in get_subclasses(BaseInitializer):
+        if class_.__name__ == name:
+            return class_
+    raise ValueError('Unknown Initializer: {}'.format(name))
+
+
+def get_node(name):
+    """Get ``Node`` calss by name
+
+    Parameters
+    ----------
+    name : str
+        Type of ``Node`` to get
+
+    Returns
+    -------
+    type
+        ``Node`` type found
+
+    Raises
+    ------
+    ValueError
+        When ``Node`` class with the given type is not found
+    """
+    for class_ in get_subclasses(Node):
         if class_.__name__ == name:
             return class_
     raise ValueError('Unknown Initializer: {}'.format(name))

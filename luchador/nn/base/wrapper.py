@@ -6,6 +6,8 @@ from collections import OrderedDict
 
 import numpy as np
 
+from .component import Node
+
 __all__ = [
     'BaseWrapper', 'BaseTensor', 'BaseVariable', 'BaseInput', 'BaseOperation',
 ]
@@ -98,7 +100,7 @@ def retrieve_operation(name):
 ###############################################################################
 
 
-class BaseWrapper(object):
+class BaseWrapper(Node, object):
     """Wraps Tensor or Variable object in Theano/Tensorflow
 
     This class was introduced to provide easy shape inference to Theano Tensors

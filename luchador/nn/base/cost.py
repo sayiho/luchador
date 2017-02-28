@@ -6,11 +6,12 @@ import logging
 
 import luchador.util
 from . import scope as scope_module
+from .component import Node
 
 _LG = logging.getLogger(__name__)
 
 
-class BaseCost(luchador.util.StoreMixin, object):
+class BaseCost(Node, luchador.util.StoreMixin, object):
     """Define common interface for cost computation class"""
     __metaclass__ = abc.ABCMeta
 

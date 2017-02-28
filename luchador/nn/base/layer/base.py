@@ -8,13 +8,14 @@ from collections import OrderedDict
 
 import luchador.util
 from .. import scope as scope_module
+from ..component import Node
 
 _LG = logging.getLogger(__name__)
 
 __all__ = ['BaseLayer']
 
 
-class BaseLayer(luchador.util.StoreMixin, object):
+class BaseLayer(Node, luchador.util.StoreMixin, object):
     """Define common interface (``build``, ``parameters`` ...) of Layer"""
     __metaclass__ = abc.ABCMeta
 

@@ -4,11 +4,11 @@ from __future__ import absolute_import
 from luchador.util import get_subclasses
 import luchador.nn
 from ..base import wrapper as base_wrapper
-from ..base.getter import get_cost, get_layer, get_optimizer, get_initializer
+from ..base.getter import get_node, get_cost, get_layer, get_optimizer, get_initializer
 from ..model import BaseModel
 
 __all__ = [
-    'get_cost', 'get_layer', 'get_optimizer', 'get_initializer',
+    'get_node', 'get_cost', 'get_layer', 'get_optimizer', 'get_initializer',
     'get_model', 'get_input', 'get_tensor', 'get_grad', 'get_operation',
 ]
 
