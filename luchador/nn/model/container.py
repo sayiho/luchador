@@ -18,6 +18,9 @@ class Container(BaseModel):
         self.input = None
         self.output = None
 
+    def _get_components(self):
+        return self.models.values()
+
     def add_model(self, name, model):
         """Add model.
 
@@ -32,58 +35,5 @@ class Container(BaseModel):
         self.models[name] = model
         return self
 
-    def get_parameters_to_train(self):
-        """Get parameter Variables to be fet to gradient computation.
-
-        Returns
-        -------
-        list
-            List of Variables from interanal models.
-        """
-        ret = []
-        for name_ in self.models.keys():
-            ret.extend(self.models[name_].get_parameters_to_train())
-        return ret
-
-    def get_parameters_to_serialize(self):
-        """Get parameter Variables to be serialized.
-
-        Returns
-        -------
-        list
-            List of Variables from internal models.
-        """
-        ret = []
-        for name_ in self.models.keys():
-            ret.extend(self.models[name_].get_parameters_to_serialize())
-        return ret
-
-    def get_output_tensors(self):
-        """Get Tensor s which represent the output of each layer of this model
-
-        Returns
-        -------
-        list
-            List of Tensors each of which hold output from layer
-        """
-        ret = []
-        for name_ in self.models.keys():
-            ret.extend(self.models[name_].get_output_tensors())
-        return ret
-
-    def get_update_operations(self):
-        """Get update opretaions from each layer of this model
-
-        Returns
-        -------
-        list
-            List of update operations from each layer
-        """
-        ret = []
-        for name_ in self.models.keys():
-            ret.extend(self.models[name_].get_update_operations())
-        return ret
-
-    ###########################################################################
     def __repr__(self):
         return repr({self.__class__.__name__: self.models})

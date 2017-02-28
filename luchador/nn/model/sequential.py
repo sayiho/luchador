@@ -73,6 +73,9 @@ class Sequential(BaseModel):
         super(Sequential, self).__init__()
         self.layers = []
 
+    def _get_components(self):
+        return self.layers
+
     @property
     def input(self):
         """Return the input of the first layer else None"""
@@ -87,7 +90,6 @@ class Sequential(BaseModel):
             return self.layers[-1].output
         return None
 
-    ###########################################################################
     def add_layer(self, layer):
         """Add layer to model
 
@@ -98,12 +100,6 @@ class Sequential(BaseModel):
         """
         self.layers.append(layer)
         return self
-
-    ###########################################################################
-    # Functions for building actual computation graphs
-    def __call__(self, input_tensor):
-        """Convenience function to call ``build``"""
-        return self.build(input_tensor)
 
     def build(self, tensor):
         """Build the model on top of input tensor.
@@ -122,57 +118,5 @@ class Sequential(BaseModel):
             tensor = layer(tensor)
         return tensor
 
-    ###########################################################################
-    # Functions for retrieving variables, tensors and operations
-    def get_parameters_to_train(self):
-        """Get parameter Variables to be fet to gradient computation.
-
-        Returns
-        -------
-        list
-            List of Variables from layer parameters
-        """
-        ret = []
-        for layer in self.layers:
-            ret.extend(layer.get_parameters_to_train())
-        return ret
-
-    def get_parameters_to_serialize(self):
-        """Get parameter Variables to be serialized.
-
-        Returns
-        -------
-        list
-            List of Variables from layer parameters
-        """
-        ret = []
-        for layer in self.layers:
-            ret.extend(layer.get_parameters_to_serialize())
-        return ret
-
-    def get_output_tensors(self):
-        """Get Tensor objects which represent the output of each layer
-
-        Returns
-        -------
-        list
-            List of Tensors each of which hold output from layer
-        """
-        return [layer.output for layer in self.layers]
-
-    def get_update_operations(self):
-        """Get update opretaions from each layer
-
-        Returns
-        -------
-        list
-            List of update operations from each layer
-        """
-        ret = []
-        for layer in self.layers:
-            ret.extend(layer.get_update_operations())
-        return ret
-
-    ###########################################################################
     def __repr__(self):
         return repr({self.__class__.__name__: self.layers})
