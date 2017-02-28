@@ -5,6 +5,7 @@ import logging
 from collections import OrderedDict
 
 import luchador.nn
+from ..base import BaseCost, BaseLayer
 from ..model import Sequential, Graph, Container
 from .getter import get_input, get_layer, get_tensor, get_node
 
@@ -109,11 +110,19 @@ def make_io_node(config):
 
 
 def make_node(node_config):
-    _LG.info('  Constructing Layer: %s', node_config)
+    _LG.info('  Constructing node: %s', node_config)
     if 'typename' not in node_config:
-        raise RuntimeError('Layer `typename` is not given')
+        raise RuntimeError('Node `typename` is not given')
 
-    node = get_node(node_config['typename'])(**node_config.get('args', {}))
+    node_class = get_node(node_config['typename'])
+    node = node_class(**node_config.get('args', {}))
+
+    input_ = make_io_node(node_config['input'])
+
+    if issubclass(node_class, BaseLayer):
+        node(input_)
+    elif issubclass(node_class, BaseCost):
+        node(*input_)
 
     return node
 

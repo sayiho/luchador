@@ -60,6 +60,20 @@ class BaseCost(Node, luchador.util.StoreMixin, object):
     def _build(self, target, prediction):
         pass
 
+    def get_update_operation(self):
+        return None
+
+    def get_output_tensors(self):
+        return []
+
+    def get_parameters_to_train(self):
+        return []
+
+    def get_parameters_to_serialize(self):
+        return []
+
+    def get_parameter_variables(self):
+        return []
 
 ###############################################################################
 # pylint: disable=abstract-method
