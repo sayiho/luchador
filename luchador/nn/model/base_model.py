@@ -67,7 +67,9 @@ class BaseModel(object):  # pylint: disable=too-few-public-methods
         list
             List of Tensors each of which hold output from layer
         """
-        return [comp.output for comp in self._get_components()]
+        return _flatten([
+            cm.get_output_tensors() for cm in self._get_components()
+        ])
 
     def get_update_operations(self):
         """Get update opretaions from each layer

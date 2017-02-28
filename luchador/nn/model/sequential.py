@@ -118,5 +118,15 @@ class Sequential(BaseModel):
             tensor = layer(tensor)
         return tensor
 
+    def get_output_tensors(self):
+        """Get Tensor objects which represent the output of each layer
+
+        Returns
+        -------
+        list
+            List of Tensors each of which hold output from layer
+        """
+        return [comp.output for comp in self._get_components()]
+
     def __repr__(self):
         return repr({self.__class__.__name__: self.layers})
