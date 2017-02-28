@@ -71,7 +71,6 @@ class Sequential(BaseModel):
     """
     def __init__(self):
         super(Sequential, self).__init__()
-        # Layer configurations
         self.layers = []
 
     @property
