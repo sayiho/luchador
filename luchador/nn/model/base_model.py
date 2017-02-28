@@ -77,9 +77,6 @@ class BaseModel(object):  # pylint: disable=too-few-public-methods
         list
             List of update operations from each layer
         """
-        ret = []
-        for comp in self._get_components():
-            update = comp.get_update_operations()
-            if update:
-                ret.append(update)
-        return ret
+        return _flatten([
+            comp.get_update_operations() for comp in self._get_components()
+        ])
