@@ -18,42 +18,46 @@ args:
           reuse: True
           name: state
         layer_configs:
-          - scope: common/layer0/preprocessing
-            typename: TrueDiv
+          - typename: TrueDiv
             args:
               denom: 255
-          - scope: common/layer1/conv2D
-            typename: Conv2D
+              name: common/layer0/preprocessing
+          - typename: Conv2D
             args:
               n_filters: 32
               filter_width: 8
               filter_height: 8
               strides: 4
               padding: valid
-          - scope: common/layer1/ReLU
-            typename: ReLU
-          - scope: common/layer2/conv2D
-            typename: Conv2D
+              name: common/layer1/conv2D
+          - typename: ReLU
+            args:
+              name: common/layer1/ReLU
+          - typename: Conv2D
             args:
               n_filters: 64
               filter_width: 4
               filter_height: 4
               strides: 2
               padding: valid
-          - scope: common/layer2/ReLU
-            typename: ReLU
-          - scope: common/layer3/conv2D
-            typename: Conv2D
+              name: common/layer2/conv2D
+          - typename: ReLU
+            args:
+              name: common/layer2/ReLU
+          - typename: Conv2D
             args:
               filter_width: 3
               filter_height: 3
               n_filters: 64
               strides: 1
               padding: valid
-          - scope: common/layer3/ReLU
-            typename: ReLU
-          - scope: common/layer4/flatten
-            typename: Flatten
+              name: common/layer3/conv2D
+          - typename: ReLU
+            args:
+              name: common/layer3/ReLU
+          - typename: Flatten
+            args:
+              name: common/layer4/flatten
     - name: state_value
       typename: Sequential
       args:
@@ -61,17 +65,17 @@ args:
           typename: Tensor
           name: common/layer4/flatten/output
         layer_configs:
-          - scope: value/layer5/dense
+          - name: value/layer5/dense
             typename: Dense
             args:
               n_nodes: 512
-          - scope: value/layer5/ReLU
+          - name: value/layer5/ReLU
             typename: ReLU
-          - scope: value/layer6/dense
+          - name: value/layer6/dense
             typename: Dense
             args:
               n_nodes: 1
-          - scope: value/layer7/tile
+          - name: value/layer7/tile
             typename: Tile
             args:
               pattern:
@@ -84,27 +88,28 @@ args:
           typename: Tensor
           name: common/layer4/flatten/output
         layer_configs:
-          - scope: advantage/layer5/dense
-            typename: Dense
+          - typename: Dense
             args:
               n_nodes: 512
-          - scope: advantage/layer5/ReLU
-            typename: ReLU
-          - scope: advantage/layer6/dense
-            typename: Dense
+              name: advantage/layer5/dense
+          - typename: ReLU
+            args:
+              name: advantage/layer5/ReLU
+          - typename: Dense
             args:
               n_nodes: {n_actions}
-          - scope: advantage/layer7/mean
-            typename: Mean
+              name: advantage/layer6/dense
+          - typename: Mean
             args:
               axis: 1
               keep_dims: True
-          - scope: advantage/layer7/tile
-            typename: Tile
+              name: advantage/layer7/mean
+          - typename: Tile
             args:
               pattern:
                 - 1
                 - {n_actions}
+              name: advantage/layer7/tile
     - name: advantage1
       typename: Sequential
       args:
@@ -114,7 +119,7 @@ args:
           - typename: Tensor
             name: advantage/layer7/tile/output
         layer_configs:
-          - scope: advantage/layer7/sub
+          - name: advantage/layer7/sub
             typename: Sub
     - name: q_value
       typename: Sequential
@@ -125,5 +130,5 @@ args:
           - typename: Tensor
             name: advantage/layer7/sub/output
         layer_configs:
-          - scope: q_value/layer9
+          - name: q_value/layer9
             typename: Add
