@@ -65,22 +65,23 @@ args:
           typename: Tensor
           name: common/layer4/flatten/output
         layer_configs:
-          - name: value/layer5/dense
-            typename: Dense
+          - typename: Dense
             args:
               n_nodes: 512
-          - name: value/layer5/ReLU
-            typename: ReLU
-          - name: value/layer6/dense
-            typename: Dense
+              name: value/layer5/dense
+          - typename: ReLU
+            args:
+              name: value/layer5/ReLU
+          - typename: Dense
             args:
               n_nodes: 1
-          - name: value/layer7/tile
-            typename: Tile
+              name: value/layer6/dense
+          - typename: Tile
             args:
               pattern:
                 - 1
                 - {n_actions}
+              name: value/layer7/tile
     - name: advantage0
       typename: Sequential
       args:
@@ -130,5 +131,6 @@ args:
           - typename: Tensor
             name: advantage/layer7/sub/output
         layer_configs:
-          - name: q_value/layer9
-            typename: Add
+          - typename: Add
+            args:
+              name: q_value/layer9
