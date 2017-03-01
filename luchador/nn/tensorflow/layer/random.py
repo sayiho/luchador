@@ -24,9 +24,9 @@ class NormalNoise(_NoiseMixin, base_layer.BaseNormalNoise):
     """
     def _sample(self, shape, dtype):
         mean, std = self.args['mean'], self.args['std']
-        return tf.rand_normal(
+        return tf.random_normal(
             shape=shape, mean=mean, stddev=std,
-            dtyp=dtype, seed=self.args['seed'],
+            dtype=dtype, seed=self.args['seed'],
         )
 
 
