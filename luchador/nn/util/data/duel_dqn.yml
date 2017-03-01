@@ -120,8 +120,9 @@ args:
           - typename: Tensor
             name: advantage/layer7/tile/output
         layer_configs:
-          - name: advantage/layer7/sub
-            typename: Sub
+          - typename: Sub
+            args:
+              name: advantage/layer7/sub
     - name: q_value
       typename: Sequential
       args:
