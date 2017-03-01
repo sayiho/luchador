@@ -7,7 +7,7 @@ from ...base import layer as base_layer
 from ..wrapper import Tensor
 
 
-class _NoiseMixin(object):
+class _NoiseMixin(object):  # pylint: disable=too-few-public-methods
     def _build(self, input_tensor):
         shape = input_tensor.shape
         dtype = input_tensor.dtype
@@ -18,6 +18,10 @@ class _NoiseMixin(object):
 
 
 class NormalNoise(_NoiseMixin, base_layer.BaseNormalNoise):
+    """Implement NormalNoise in theano backend.
+
+    See :any:`BaseNormalNoise` for the detail
+    """
     def _sample(self, shape, dtype):
         mean, std = self.args['mean'], self.args['std']
         return tf.rand_normal(
@@ -27,6 +31,10 @@ class NormalNoise(_NoiseMixin, base_layer.BaseNormalNoise):
 
 
 class UniformNoise(_NoiseMixin, base_layer.BaseUniformNoise):
+    """Implement UniformNoise in theano backend.
+
+    See :any:`BaseUniformNoise` for the detail
+    """
     def _sample(self, shape, dtype):
         minval, maxval = self.args['low'], self.args['high']
         return tf.random_uniform(

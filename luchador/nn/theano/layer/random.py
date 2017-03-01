@@ -7,7 +7,7 @@ from ...base import layer as base_layer
 from ..wrapper import Tensor
 
 
-class _NoiseMixin(object):
+class _NoiseMixin(object):  # pylint: disable=too-few-public-methods
     def _instantiate_generator(self):
         if self._rng is None:
             seed = self.args['seed'] or 123456
@@ -25,6 +25,10 @@ class _NoiseMixin(object):
 
 
 class NormalNoise(_NoiseMixin, base_layer.BaseNormalNoise):
+    """Implement NormalNoise in theano backend.
+
+    See :any:`BaseNormalNoise` for the detail
+    """
     def _sample(self, shape, dtype):
         mean, std = self.args['mean'], self.args['std']
         return self._rng.normal(
@@ -33,6 +37,10 @@ class NormalNoise(_NoiseMixin, base_layer.BaseNormalNoise):
 
 
 class UniformNoise(_NoiseMixin, base_layer.BaseUniformNoise):
+    """Implement UniformNoise in theano backend.
+
+    See :any:`BaseUniformNoise` for the detail
+    """
     def _sample(self, shape, dtype):
         low, high = self.args['low'], self.args['high']
         return self._rng.uniform(
