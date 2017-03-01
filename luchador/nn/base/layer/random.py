@@ -6,12 +6,14 @@ from .base import BaseLayer
 
 # pylint: disable=abstract-method
 class BaseNormalNoise(BaseLayer):
-    def __init__(self, mean=0.0, std=1.0, seed=None):
-        super(BaseNormalNoise, self).__init__(mean=mean, std=std, seed=seed)
+    def __init__(self, mean=0.0, std=1.0, seed=None, name='NormalNoise'):
+        super(BaseNormalNoise, self).__init__(
+            mean=mean, std=std, seed=seed, name=name)
         self._rng = None
 
 
 class BaseUniformNoise(BaseLayer):
-    def __init__(self, low=0.0, high=1.0, seed=None):
-        super(BaseUniformNoise, self).__init__(low=low, hight=high, seed=seed)
+    def __init__(self, low=0.0, high=1.0, seed=None, name='UniformNoise'):
+        super(BaseUniformNoise, self).__init__(
+            low=low, high=high, seed=seed, name=name)
         self._rng = None

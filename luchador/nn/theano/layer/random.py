@@ -10,7 +10,8 @@ from ..wrapper import Tensor
 class _NoiseMixin(object):
     def _instantiate_generator(self):
         if self._rng is None:
-            self._rng = RandomStreams(seed=self.args['seed'])
+            seed = self.args['seed'] or 123456
+            self._rng = RandomStreams(seed=seed)
 
     def _build(self, input_tensor):
         self._instantiate_generator()
