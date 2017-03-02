@@ -3,8 +3,8 @@ from __future__ import absolute_import
 
 from theano.sandbox.rng_mrg import MRG_RandomStreams as RandomStreams
 
-from ...base import layer as base_layer
 from ..wrapper import Tensor
+# pylint: disable=no-member
 
 
 class _NoiseMixin(object):  # pylint: disable=too-few-public-methods
@@ -24,7 +24,7 @@ class _NoiseMixin(object):  # pylint: disable=too-few-public-methods
         return Tensor(tensor=tensor, shape=shape, name='output')
 
 
-class NormalNoise(_NoiseMixin, base_layer.BaseNormalNoise):
+class NormalNoise(_NoiseMixin):
     """Implement NormalNoise in theano backend.
 
     See :any:`BaseNormalNoise` for the detail
@@ -36,7 +36,7 @@ class NormalNoise(_NoiseMixin, base_layer.BaseNormalNoise):
         )
 
 
-class UniformNoise(_NoiseMixin, base_layer.BaseUniformNoise):
+class UniformNoise(_NoiseMixin):
     """Implement UniformNoise in theano backend.
 
     See :any:`BaseUniformNoise` for the detail

@@ -1,12 +1,12 @@
 """Module for implementing random source"""
 from __future__ import absolute_import
 
-from .base import BaseLayer
-
+from ...base import BaseLayer
+from ...backend import layer
 # pylint: disable=abstract-method
 
 
-class BaseNormalNoise(BaseLayer):
+class NormalNoise(layer.NormalNoise, BaseLayer):
     """Add random values from a normal distribution to input
 
     Parameters
@@ -24,12 +24,12 @@ class BaseNormalNoise(BaseLayer):
         Scope for the output tensor.
     """
     def __init__(self, mean=0.0, std=1.0, seed=None, name='NormalNoise'):
-        super(BaseNormalNoise, self).__init__(
+        super(NormalNoise, self).__init__(
             mean=mean, std=std, seed=seed, name=name)
         self._rng = None
 
 
-class BaseUniformNoise(BaseLayer):
+class UniformNoise(layer.UniformNoise, BaseLayer):
     """Add random values from a uniform distribution to input
 
     Parameters
@@ -47,6 +47,6 @@ class BaseUniformNoise(BaseLayer):
         Scope for the output tensor.
     """
     def __init__(self, low=0.0, high=1.0, seed=None, name='UniformNoise'):
-        super(BaseUniformNoise, self).__init__(
+        super(UniformNoise, self).__init__(
             low=low, high=high, seed=seed, name=name)
         self._rng = None
